@@ -1,12 +1,33 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { PlayerService } from './services/service';
+import { Player } from './models/football.models';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrls: ['./app.scss']
 })
-export class App {
-  protected readonly title = signal('Angular17Client');
+export class App implements OnInit {
+  private playerService = inject(PlayerService);
+  
+  // Zmiana 1: Zamiast zwykłej tablicy, tworzymy Signal
+  players = signal<Player[]>([]);
+
+  ngOnInit(): void {
+    this.fetchPlayers();
+  }
+
+  fetchPlayers(): void {
+    this.playerService.getPlayers().subscribe({
+      next: (data) => {
+        // Zmiana 2: Używamy .set(), aby zaktualizować dane. Angular od razu to zauważy!
+        this.players.set(data);
+        console.log('Udało się pobrać dane z .NET!', data);
+      },
+      error: (err) => {
+        console.error('Błąd pobierania danych:', err);
+      }
+    });
+  }
 }
