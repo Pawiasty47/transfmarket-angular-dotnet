@@ -1,18 +1,29 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms'; // DODANE: Moduł formularzy
 import { PlayerService } from './services/service';
 import { Player } from './models/football.models';
 
 @Component({
   selector: 'app-root',
   standalone: true,
+  imports: [FormsModule], // DODANE: Rejestracja modułu w komponencie
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
 export class App implements OnInit {
   private playerService = inject(PlayerService);
   
-  // Zmiana 1: Zamiast zwykłej tablicy, tworzymy Signal
   players = signal<Player[]>([]);
+
+  // Obiekt do przetrzymywania danych z formularza
+  newPlayer: any = {
+    firstName: '',
+    lastName: '',
+    age: 18,
+    weight: 70,
+    clubId: 1, // Domyślnie Real Madryt (ID: 1 w bazie)
+    nationalityId: 1 // Domyślnie Polska (ID: 1 w bazie)
+  };
 
   ngOnInit(): void {
     this.fetchPlayers();
@@ -20,14 +31,36 @@ export class App implements OnInit {
 
   fetchPlayers(): void {
     this.playerService.getPlayers().subscribe({
-      next: (data) => {
-        // Zmiana 2: Używamy .set(), aby zaktualizować dane. Angular od razu to zauważy!
-        this.players.set(data);
-        console.log('Udało się pobrać dane z .NET!', data);
-      },
-      error: (err) => {
-        console.error('Błąd pobierania danych:', err);
-      }
+      next: (data) => this.players.set(data),
+      error: (err) => console.error('Błąd pobierania:', err)
     });
+  }
+
+  // Funkcja DODAWANIA
+  addPlayer(): void {
+    this.playerService.createPlayer(this.newPlayer).subscribe({
+      next: () => {
+        console.log('Dodano gracza!');
+        this.fetchPlayers(); // Odświeżamy listę, żeby zaciągnąć relacje (nazwę klubu itp.)
+        // Resetujemy formularz
+        this.newPlayer.firstName = '';
+        this.newPlayer.lastName = '';
+      },
+      error: (err) => console.error('Błąd dodawania:', err)
+    });
+  }
+
+  // Funkcja USUWANIA
+  deletePlayer(id: number): void {
+    if(confirm('Na pewno chcesz usunąć tego zawodnika?')) {
+      this.playerService.deletePlayer(id).subscribe({
+        next: () => {
+          console.log('Usunięto gracza!');
+          // Aktualizujemy sygnał, usuwając gracza z listy bez przeładowania strony
+          this.players.update(currentPlayers => currentPlayers.filter(p => p.id !== id));
+        },
+        error: (err) => console.error('Błąd usuwania:', err)
+      });
+    }
   }
 }

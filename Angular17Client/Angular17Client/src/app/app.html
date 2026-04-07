@@ -1,5 +1,30 @@
 <div style="padding: 20px; font-family: sans-serif;">
-  <h2>Lista Piłkarzy (Test połączenia z bazą)</h2>
+  <h2>Zarządzanie Piłkarzami</h2>
+
+  <div style="background-color: #f9f9f9; padding: 15px; margin-bottom: 20px; border: 1px solid #ddd;">
+    <h3>Dodaj nowego zawodnika</h3>
+    <input type="text" [(ngModel)]="newPlayer.firstName" placeholder="Imię" style="margin-right: 5px;">
+    <input type="text" [(ngModel)]="newPlayer.lastName" placeholder="Nazwisko" style="margin-right: 5px;">
+    <input type="number" [(ngModel)]="newPlayer.age" placeholder="Wiek" style="margin-right: 5px; width: 60px;">
+    <input type="number" [(ngModel)]="newPlayer.weight" placeholder="Waga" style="margin-right: 5px; width: 60px;">
+    
+    <select [(ngModel)]="newPlayer.clubId" style="margin-right: 5px;">
+      <option [ngValue]="1">Real Madryt</option>
+      <option [ngValue]="2">FC Barcelona</option>
+      <option [ngValue]="3">Jagiellonia Białystok</option>
+    </select>
+
+    <select [(ngModel)]="newPlayer.nationalityId" style="margin-right: 5px;">
+      <option [ngValue]="1">Polska</option>
+      <option [ngValue]="2">Hiszpania</option>
+      <option [ngValue]="3">Brazylia</option>
+      <option [ngValue]="4">Anglia</option>
+    </select>
+
+    <button (click)="addPlayer()" style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+      Dodaj Zawodnika
+    </button>
+  </div>
   
   <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; text-align: left;">
     <thead style="background-color: #f2f2f2;">
@@ -9,21 +34,27 @@
         <th>Wiek</th>
         <th>Klub</th>
         <th>Narodowość</th>
-      </tr>
+        <th>Akcje</th> </tr>
     </thead>
     <tbody>
       @for (player of players(); track player.id) {
-  <tr>
-    <td>{{ player.id }}</td>
-    <td>{{ player.firstName }} {{ player.lastName }}</td>
-    <td>{{ player.age }}</td>
-    <td>{{ player.club?.name }}</td>
-    <td>{{ player.nationality?.name }}</td>
-  </tr>
-} @empty {
-  <tr>
-    <td colspan="5" style="text-align: center;">Ładowanie danych lub brak zawodników w bazie...</td>
-  </tr>
-}</tbody>
+        <tr>
+          <td>{{ player.id }}</td>
+          <td>{{ player.firstName }} {{ player.lastName }}</td>
+          <td>{{ player.age }}</td>
+          <td>{{ player.club?.name }}</td>
+          <td>{{ player.nationality?.name }}</td>
+          <td>
+            <button (click)="deletePlayer(player.id)" style="background-color: #f44336; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+              Usuń
+            </button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="6" style="text-align: center;">Brak zawodników w bazie...</td>
+        </tr>
+      }
+    </tbody>
   </table>
 </div>
