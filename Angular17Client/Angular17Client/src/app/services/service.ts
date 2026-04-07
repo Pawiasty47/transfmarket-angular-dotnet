@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+// Dodajemy HttpParams do importu:
+import { HttpClient, HttpParams } from '@angular/common/http'; 
 import { Observable } from 'rxjs';
 import { Player } from '../models/football.models';
 import { environment } from '../../enviroments/enviroments';
@@ -11,15 +12,22 @@ export class PlayerService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/api/Players`;
 
-  getPlayers(): Observable<Player[]> {
-    return this.http.get<Player[]>(this.apiUrl);
-  }
+  getPlayers(clubId?: number, nationalityId?: number): Observable<Player[]> {
+    let params = new HttpParams();
+    
+    if (clubId) {
+      params = params.set('clubId', clubId);
+    }
+    if (nationalityId) {
+      params = params.set('nationalityId', nationalityId);
+    }
 
+    return this.http.get<Player[]>(this.apiUrl, { params: params });
+  }
 
   createPlayer(player: Player): Observable<Player> {
     return this.http.post<Player>(this.apiUrl, player);
   }
-
 
   deletePlayer(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);

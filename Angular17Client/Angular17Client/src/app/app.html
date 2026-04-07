@@ -26,6 +26,25 @@
     </button>
   </div>
   
+<div style="background-color: #eef; padding: 10px; margin-bottom: 20px; border: 1px solid #ccd;">
+    <strong>Filtruj zawodników:</strong>
+    
+    <select [(ngModel)]="filterClubId" (change)="fetchPlayers()" style="margin-left: 10px; margin-right: 10px;">
+      <option [ngValue]="0">-- Wszystkie Kluby --</option>
+      <option [ngValue]="1">Real Madryt</option>
+      <option [ngValue]="2">FC Barcelona</option>
+      <option [ngValue]="3">Jagiellonia Białystok</option>
+    </select>
+
+    <select [(ngModel)]="filterNationalityId" (change)="fetchPlayers()" style="margin-right: 10px;">
+      <option [ngValue]="0">-- Wszystkie Narodowości --</option>
+      <option [ngValue]="1">Polska</option>
+      <option [ngValue]="2">Hiszpania</option>
+      <option [ngValue]="3">Brazylia</option>
+      <option [ngValue]="4">Anglia</option>
+    </select>
+  </div>
+
   <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; text-align: left;">
     <thead style="background-color: #f2f2f2;">
       <tr>

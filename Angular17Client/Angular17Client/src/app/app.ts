@@ -14,6 +14,8 @@ export class App implements OnInit {
   private playerService = inject(PlayerService);
   
   players = signal<Player[]>([]);
+  filterClubId: number = 0;
+  filterNationalityId: number = 0;
 
   // Obiekt do przetrzymywania danych z formularza
   newPlayer: any = {
@@ -30,7 +32,10 @@ export class App implements OnInit {
   }
 
   fetchPlayers(): void {
-    this.playerService.getPlayers().subscribe({
+    const cId = this.filterClubId !== 0 ? this.filterClubId : undefined;
+    const nId = this.filterNationalityId !== 0 ? this.filterNationalityId : undefined;
+
+    this.playerService.getPlayers(cId, nId).subscribe({
       next: (data) => this.players.set(data),
       error: (err) => console.error('Błąd pobierania:', err)
     });
