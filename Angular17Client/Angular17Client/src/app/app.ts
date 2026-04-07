@@ -23,8 +23,10 @@ export class App implements OnInit {
     lastName: '',
     age: 18,
     weight: 70,
-    clubId: 1, // Domyślnie Real Madryt (ID: 1 w bazie)
-    nationalityId: 1 // Domyślnie Polska (ID: 1 w bazie)
+    price: 0,        // DODANE
+    position: 'Napastnik', // DODANE
+    clubId: 1,
+    nationalityId: 1
   };
 
   ngOnInit(): void {

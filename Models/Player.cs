@@ -8,7 +8,9 @@
         public int Age { get; set; }
         public double Weight { get; set; }
 
-        // Relacje (Klucze obce)
+        public decimal Price { get; set; }
+        public string Position { get; set; } = string.Empty; 
+
         public int ClubId { get; set; }
         public Club? Club { get; set; }
 

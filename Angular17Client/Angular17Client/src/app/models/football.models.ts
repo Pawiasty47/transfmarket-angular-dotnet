@@ -17,8 +17,10 @@ export interface Player {
   lastName: string;
   age: number;
   weight: number;
+  price: number;     
+  position: string;  
   clubId: number;
   nationalityId: number;
-  club?: Club;               
-  nationality?: Nationality; 
+  club?: Club;
+  nationality?: Nationality;
 }

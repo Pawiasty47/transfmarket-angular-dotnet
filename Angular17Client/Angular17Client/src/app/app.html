@@ -7,6 +7,8 @@
     <input type="text" [(ngModel)]="newPlayer.lastName" placeholder="Nazwisko" style="margin-right: 5px;">
     <input type="number" [(ngModel)]="newPlayer.age" placeholder="Wiek" style="margin-right: 5px; width: 60px;">
     <input type="number" [(ngModel)]="newPlayer.weight" placeholder="Waga" style="margin-right: 5px; width: 60px;">
+    <input type="text" [(ngModel)]="newPlayer.position" placeholder="Pozycja" style="margin-right: 5px;">
+    <input type="number" [(ngModel)]="newPlayer.price" placeholder="Cena mln €" style="margin-right: 5px; width: 80px;">
     
     <select [(ngModel)]="newPlayer.clubId" style="margin-right: 5px;">
       <option [ngValue]="1">Real Madryt</option>
@@ -53,7 +55,9 @@
         <th>Wiek</th>
         <th>Klub</th>
         <th>Narodowość</th>
-        <th>Akcje</th> </tr>
+        <th>Pozycja</th>
+        <th>Cena (mln €)</th>
+      </tr>
     </thead>
     <tbody>
       @for (player of players(); track player.id) {
@@ -63,6 +67,8 @@
           <td>{{ player.age }}</td>
           <td>{{ player.club?.name }}</td>
           <td>{{ player.nationality?.name }}</td>
+          <td>{{ player.position }}</td>
+          <td>{{ player.price }} mln €</td>
           <td>
             <button (click)="deletePlayer(player.id)" style="background-color: #f44336; color: white; border: none; padding: 5px 10px; cursor: pointer;">
               Usuń
