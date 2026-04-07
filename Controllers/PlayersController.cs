@@ -16,12 +16,26 @@ namespace Testx.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
+        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers(
+            [FromQuery] int? clubId,
+            [FromQuery] int? nationalityId)
         {
-            return await _context.Players
+            var query = _context.Players
                 .Include(p => p.Club)
                 .Include(p => p.Nationality)
-                .ToListAsync();
+                .AsQueryable();
+
+            if (clubId.HasValue)
+            {
+                query = query.Where(p => p.ClubId == clubId.Value);
+            }
+
+            if (nationalityId.HasValue)
+            {
+                query = query.Where(p => p.NationalityId == nationalityId.Value);
+            }
+
+            return await query.ToListAsync();
         }
 
         [HttpGet("{id}")]
