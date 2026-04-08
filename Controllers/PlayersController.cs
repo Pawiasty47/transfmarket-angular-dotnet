@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Testx.Models;
+using Testx.Services;
 
 namespace Testx.Controllers
 {
@@ -9,33 +10,58 @@ namespace Testx.Controllers
     public class PlayersController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly ICountryApiService _countryApiService;
 
-        public PlayersController(AppDbContext context)
+        public PlayersController(AppDbContext context, ICountryApiService countryApiService)
         {
             _context = context;
+            _countryApiService = countryApiService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers(
-            [FromQuery] int? clubId,
-            [FromQuery] int? nationalityId)
+        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetPlayers([FromQuery] int? clubId, [FromQuery] int? nationalityId)
         {
             var query = _context.Players
                 .Include(p => p.Club)
                 .Include(p => p.Nationality)
                 .AsQueryable();
 
-            if (clubId.HasValue)
+            if (clubId.HasValue) query = query.Where(p => p.ClubId == clubId.Value);
+            if (nationalityId.HasValue) query = query.Where(p => p.NationalityId == nationalityId.Value);
+
+            var players = await query.ToListAsync();
+
+            var uniqueCountries = players
+                .Where(p => p.Nationality != null)
+                .Select(p => p.Nationality!.Name)
+                .Distinct()
+                .ToList();
+
+            var flagsDictionary = new Dictionary<string, string>();
+            foreach (var country in uniqueCountries)
             {
-                query = query.Where(p => p.ClubId == clubId.Value);
+                var flagUrl = await _countryApiService.GetFlagUrlAsync(country);
+                flagsDictionary[country] = flagUrl;
             }
 
-            if (nationalityId.HasValue)
+            var result = players.Select(p => new PlayerDto
             {
-                query = query.Where(p => p.NationalityId == nationalityId.Value);
-            }
+                Id = p.Id,
+                FirstName = p.FirstName,
+                LastName = p.LastName,
+                Age = p.Age,
+                Weight = p.Weight,
+                Price = p.Price,
+                Position = p.Position,
+                ClubName = p.Club?.Name ?? "Brak klubu",
+                NationalityName = p.Nationality?.Name ?? "Brak narodu",
 
-            return await query.ToListAsync();
+                FlagUrl = (p.Nationality != null && flagsDictionary.ContainsKey(p.Nationality.Name))
+                            ? flagsDictionary[p.Nationality.Name]
+                            : string.Empty
+            }).ToList();
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
