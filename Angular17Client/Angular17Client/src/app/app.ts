@@ -2,7 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PlayerService } from './services/player.service';
 import { Player } from './models/football.models';
-
+import { HeaderComponent } from './components/header/header';
+import { FooterComponent } from './components/footer/footer';
 // Importy Angular Material
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,7 +24,9 @@ import { MatCardModule } from '@angular/material/card';
     MatSelectModule, 
     MatFormFieldModule, 
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    HeaderComponent,
+    FooterComponent
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
