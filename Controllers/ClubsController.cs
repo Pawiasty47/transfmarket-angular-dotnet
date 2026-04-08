@@ -28,10 +28,9 @@ namespace Testx.Controllers
             var exists = await _context.Clubs.AnyAsync(c => c.Id == id);
             if (!exists) return NotFound();
 
-            // Sumujemy ceny wszystkich piłkarzy przypisanych do tego ClubId
-            var totalValue = await _context.Players
-                .Where(p => p.ClubId == id)
-                .SumAsync(p => p.Price);
+            // ZMIANA: Pobieramy listę piłkarzy z bazy, a sumowanie odpalamy w C# (.Sum)
+            var players = await _context.Players.Where(p => p.ClubId == id).ToListAsync();
+            var totalValue = players.Sum(p => p.Price);
 
             return Ok(totalValue);
         }

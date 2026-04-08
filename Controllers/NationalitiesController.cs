@@ -28,9 +28,9 @@ namespace Testx.Controllers
             var exists = await _context.Nationalities.AnyAsync(n => n.Id == id);
             if (!exists) return NotFound();
 
-            var totalValue = await _context.Players
-                .Where(p => p.NationalityId == id)
-                .SumAsync(p => p.Price);
+            // ZMIANA: To samo dla narodowości
+            var players = await _context.Players.Where(p => p.NationalityId == id).ToListAsync();
+            var totalValue = players.Sum(p => p.Price);
 
             return Ok(totalValue);
         }

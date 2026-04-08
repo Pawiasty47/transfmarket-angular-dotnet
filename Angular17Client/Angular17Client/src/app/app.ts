@@ -52,6 +52,9 @@ export class App implements OnInit {
   filterNationalityId: number = 0;
   editingPlayerId: number | null = null; 
 
+  totalValue: number = 0;
+  totalValueLabel: string = 'Łączna wartość całej bazy:';
+
   displayedColumns: string[] = ['id', 'name', 'age', 'position', 'price', 'club', 'nationality', 'actions'];
 
   newPlayer: any = {
@@ -67,10 +70,46 @@ export class App implements OnInit {
     const nId = this.filterNationalityId !== 0 ? this.filterNationalityId : undefined;
 
     this.playerService.getPlayers(cId, nId).subscribe({
-      // ZMIANA: Przekazujemy pobrane dane prosto do właściwości .data
-      next: (data) => this.dataSource.data = data,
+      next: (data) => {
+        this.dataSource.data = data;
+        this.fetchTotalValue();
+      },
       error: (err) => console.error('Błąd pobierania:', err)
     });
+  }
+
+fetchTotalValue(): void {
+    const hasClub = this.filterClubId && this.filterClubId !== 0;
+    const hasNationality = this.filterNationalityId && this.filterNationalityId !== 0;
+
+    // 1. ZAZNACZONE OBA FILTRY (np. FC Barcelona + Polska)
+    if (hasClub && hasNationality) {
+      this.totalValue = this.dataSource.data.reduce((sum, player) => sum + player.price, 0);
+      this.totalValueLabel = 'Wartość zawodników (Wybrany Klub i Kraj):';
+    } 
+    // 2. ZAZNACZONY TYLKO KLUB
+    else if (hasClub) {
+      this.playerService.getClubTotalValue(this.filterClubId).subscribe({
+        next: (val) => {
+          this.totalValue = val;
+          this.totalValueLabel = 'Wartość rynkowa wybranego klubu:';
+        }
+      });
+    } 
+    // 3. ZAZNACZONY TYLKO KRAJ
+    else if (hasNationality) {
+      this.playerService.getNationalityTotalValue(this.filterNationalityId).subscribe({
+        next: (val) => {
+          this.totalValue = val;
+          this.totalValueLabel = 'Wartość rynkowa reprezentacji:';
+        }
+      });
+    } 
+    // 4. BRAK FILTRÓW
+    else {
+      this.totalValue = this.dataSource.data.reduce((sum, player) => sum + player.price, 0);
+      this.totalValueLabel = 'Łączna wartość całej bazy:';
+    }
   }
 
   editPlayer(player: Player): void {

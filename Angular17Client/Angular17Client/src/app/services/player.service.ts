@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-// Dodajemy HttpParams do importu:
 import { HttpClient, HttpParams } from '@angular/common/http'; 
 import { Observable } from 'rxjs';
 import { Player } from '../models/football.models';
@@ -10,7 +9,12 @@ import { environment } from '../../environments/environments';
 })
 export class PlayerService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/api/Players`;
+  
+  // 1. Definiujemy BAZOWY ADRES za pomocą Twojego environment (np. https://localhost:7152/api)
+  private baseUrl = `${environment.apiUrl}/api`;
+
+  // 2. Adres dla samych piłkarzy budujemy na podstawie bazy
+  private apiUrl = `${this.baseUrl}/Players`;
 
   getPlayers(clubId?: number, nationalityId?: number): Observable<Player[]> {
     let params = new HttpParams();
@@ -35,5 +39,14 @@ export class PlayerService {
   
   deletePlayer(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  // 3. Teraz total-value korzystają z poprawnego baseUrl:
+  getClubTotalValue(clubId: number): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/clubs/${clubId}/total-value`);
+  }
+
+  getNationalityTotalValue(nationalityId: number): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/nationalities/${nationalityId}/total-value`);
   }
 }
