@@ -4,13 +4,9 @@ import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
+  standalone: true, // <--- To naprawia pierwszy błąd (NG2012)
   imports: [MatToolbarModule, MatIconModule],
-  template: `
-    <mat-toolbar color="primary" style="box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: relative; z-index: 10;">
-      <mat-icon style="margin-right: 10px;">sports_soccer</mat-icon>
-      <span>Football Manager App</span>
-    </mat-toolbar>
-  `
+  templateUrl: './header.html', // <--- To naprawia drugi błąd (NG2008)
+  styleUrl: './header.scss' // Jeśli masz plik CSS zamiast SCSS, zmień na './header.css'
 })
-export class HeaderComponent {} // <--- To jest ta nazwa, której szukał Angular!
+export class HeaderComponent {}
