@@ -9,6 +9,56 @@
       <p class="hero-subtitle">Zarządzaj transferami, analizuj wartości i buduj drużynę marzeń.</p>
     </div>
 
+    <div class="dashboard-top-section">
+      
+      <div class="main-column">
+        <mat-card class="main-news-card">
+          <div class="news-image-placeholder">
+            <span class="news-badge">Wartości Rynkowe</span>
+          </div>
+          <div class="news-content">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/LaLiga_logo_2023.svg" alt="LaLiga" style="width: 40px; margin-right: 15px;">
+            <h2 style="margin: 0; font-size: 1.4rem;">Fermín López w klubie „stumilionowym”, w Realu przeważają spadki z Bellinghamem na czele</h2>
+          </div>
+        </mat-card>
+
+        <mat-card class="bottom-ad-card">
+          <div class="horizontal-ad-placeholder">Miejsce na Twoją Reklamę Poziomą</div>
+        </mat-card>
+      </div>
+
+      <div class="sidebar">
+        
+        <mat-card class="ad-card" style="padding: 0; overflow: hidden;">
+          <div class="ad-placeholder">Miejsce na Twoją Reklamę</div>
+          <div style="padding: 15px;">
+            <p style="margin: 0 0 5px 0; font-weight: bold;">Wyglądają i są jak prawdziwe zęby: spójrz na cennik</p>
+            <small style="color: #757575;">Klinika Uśmiechu</small>
+          </div>
+        </mat-card>
+
+        <mat-card style="padding: 0; overflow: hidden;">
+          <div style="background-color: #001f3f; color: white; padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; text-transform: uppercase; font-size: 14px;">Najczęściej wyświetlani</h3>
+          </div>
+          
+          <mat-accordion>
+            @for (player of topPlayers; track player.name; let i = $index) {
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title style="display: flex; justify-content: space-between; width: 100%;">
+                    <span><strong>#{{ i + 1 }}</strong> {{ player.name }}</span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p style="margin-bottom: 5px;">Wartość rynkowa: <strong>{{ player.value }}</strong></p>
+                <p style="margin: 0; color: #666; font-size: 0.9em;">Klub: {{ player.club }}</p>
+              </mat-expansion-panel>
+            }
+          </mat-accordion>
+        </mat-card>
+
+      </div>
+    </div>
     <div class="crud-container">
       
       <h2 style="margin: 0 0 20px 0; color: #3f51b5;">Baza Zawodników</h2>

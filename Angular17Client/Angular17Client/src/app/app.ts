@@ -4,6 +4,7 @@ import { PlayerService } from './services/player.service';
 import { Player } from './models/football.models';
 import { HeaderComponent } from './components/header/header';
 import { FooterComponent } from './components/footer/footer';
+
 // Importy Angular Material
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +28,8 @@ import { MatCardModule } from '@angular/material/card';
     MatIconModule,
     MatCardModule,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    MatExpansionModule
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
@@ -36,6 +39,14 @@ export class App implements OnInit {
   
   // ZMIANA: Zamiast sygnału, tworzymy dedykowane źródło danych dla tabeli Material
   dataSource = new MatTableDataSource<Player>([]);
+
+  // Sztuczne dane do widgetu "Najczęściej wyświetlani"
+  topPlayers = [
+    { name: 'M. Olise', value: '140,00 mln €', club: 'FC Bayern' },
+    { name: 'L. Yamal', value: '120,00 mln €', club: 'FC Barcelona' },
+    { name: 'J. Bellingham', value: '180,00 mln €', club: 'Real Madryt' },
+    { name: 'R. Lewandowski', value: '15,00 mln €', club: 'FC Barcelona' }
+  ];
 
   filterClubId: number = 0;
   filterNationalityId: number = 0;
