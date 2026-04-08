@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  template: `
-    <footer style="background-color: #f5f5f5; padding: 20px; text-align: center; border-top: 1px solid #ddd; margin-top: auto;">
-      <p style="margin: 0; color: #666; font-family: Roboto, sans-serif;">
-        &copy; 2026 Projekt Rekrutacyjny. Wszystkie prawa zastrzeżone.
-      </p>
-    </footer>
-  `
+  imports: [MatIconModule],
+  templateUrl: './footer.html', // lub footer.component.html
+  styleUrl: './footer.scss'     // lub footer.component.scss
 })
-export class FooterComponent {} // <--- I tej też szukał!
+export class FooterComponent {
+  // Pobieramy aktualny rok, żeby stopka zawsze była na czasie!
+  currentYear: number = new Date().getFullYear();
+}
