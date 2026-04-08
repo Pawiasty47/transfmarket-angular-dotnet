@@ -17,6 +17,8 @@ export class App implements OnInit {
   filterClubId: number = 0;
   filterNationalityId: number = 0;
 
+  editingPlayerId: number | null = null;
+
   // Obiekt do przetrzymywania danych z formularza
   newPlayer: any = {
     firstName: '',
@@ -43,18 +45,50 @@ export class App implements OnInit {
     });
   }
 
+  editPlayer(player: Player): void {
+    this.editingPlayerId = player.id;
+    // Kopiujemy dane do formularza (żeby nie zmieniać tabeli w locie przed zapisem)
+    this.newPlayer = { 
+      id: player.id, // Ważne do wysłania w PUT
+      firstName: player.firstName, 
+      lastName: player.lastName, 
+      age: player.age, 
+      weight: player.weight, 
+      price: player.price, 
+      position: player.position, 
+      clubId: player.clubId, 
+      nationalityId: player.nationalityId 
+    };
+  }
+  
   // Funkcja DODAWANIA
-  addPlayer(): void {
-    this.playerService.createPlayer(this.newPlayer).subscribe({
-      next: () => {
-        console.log('Dodano gracza!');
-        this.fetchPlayers(); // Odświeżamy listę, żeby zaciągnąć relacje (nazwę klubu itp.)
-        // Resetujemy formularz
-        this.newPlayer.firstName = '';
-        this.newPlayer.lastName = '';
-      },
-      error: (err) => console.error('Błąd dodawania:', err)
-    });
+  savePlayer(): void {
+    if (this.editingPlayerId) {
+      // TRYB EDYCJI (Update)
+      this.playerService.updatePlayer(this.editingPlayerId, this.newPlayer).subscribe({
+        next: () => {
+          console.log('Zaktualizowano gracza!');
+          this.fetchPlayers();
+          this.resetForm();
+        },
+        error: (err) => console.error('Błąd edycji:', err)
+      });
+    } else {
+      // TRYB DODAWANIA (Create)
+      this.playerService.createPlayer(this.newPlayer).subscribe({
+        next: () => {
+          console.log('Dodano gracza!');
+          this.fetchPlayers();
+          this.resetForm();
+        },
+        error: (err) => console.error('Błąd dodawania:', err)
+      });
+    }
+  }
+
+  resetForm(): void {
+    this.editingPlayerId = null;
+    this.newPlayer = { firstName: '', lastName: '', age: 18, weight: 70, price: 0, position: 'Napastnik', clubId: 1, nationalityId: 1 };
   }
 
   // Funkcja USUWANIA

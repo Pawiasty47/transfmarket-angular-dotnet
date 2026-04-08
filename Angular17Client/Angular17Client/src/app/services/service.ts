@@ -29,6 +29,10 @@ export class PlayerService {
     return this.http.post<Player>(this.apiUrl, player);
   }
 
+  updatePlayer(id: number, player: Player): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}`, player);
+  }
+  
   deletePlayer(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

@@ -18,12 +18,24 @@ namespace Testx.Services
 
         public async Task<string> GetFlagUrlAsync(string countryName)
         {
+            var countryMapper = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        { "Anglia", "United Kingdom" }, 
+        { "Włochy", "Italy" },          
+        { "Niemcy", "Germany" }
+    };
+
+            var searchName = countryMapper.ContainsKey(countryName) ? countryMapper[countryName] : countryName;
+
             try
             {
+                var response = await _httpClient.GetAsync($"https://restcountries.com/v3.1/translation/{searchName}");
 
-                var response = await _httpClient.GetAsync($"https://restcountries.com/v3.1/name/{countryName}");
-
-                if (!response.IsSuccessStatusCode) return string.Empty;
+                if (!response.IsSuccessStatusCode)
+                {
+                    response = await _httpClient.GetAsync($"https://restcountries.com/v3.1/name/{searchName}");
+                    if (!response.IsSuccessStatusCode) return string.Empty;
+                }
 
                 var jsonString = await response.Content.ReadAsStringAsync();
 

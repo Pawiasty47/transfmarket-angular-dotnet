@@ -17,10 +17,13 @@ export interface Player {
   lastName: string;
   age: number;
   weight: number;
-  price: number;     
-  position: string;  
+  price: number;
+  position: string;
+  
   clubId: number;
   nationalityId: number;
-  club?: Club;
-  nationality?: Nationality;
+
+  clubName: string;
+  nationalityName: string;
+  flagUrl: string; 
 }
