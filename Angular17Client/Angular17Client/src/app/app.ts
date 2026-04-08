@@ -71,8 +71,14 @@ export class App implements OnInit {
 
     this.playerService.getPlayers(cId, nId).subscribe({
       next: (data) => {
-        this.dataSource.data = data;
-        this.fetchTotalValue();
+        // Logika biznesowa: Ogień dostają tylko zawodnicy warci 100 mln lub więcej!
+        const playersWithFire = data.map(player => ({
+          ...player,
+          isHot: player.price >= 100 
+        }));
+
+        this.dataSource.data = playersWithFire; 
+        this.fetchTotalValue(); 
       },
       error: (err) => console.error('Błąd pobierania:', err)
     });
