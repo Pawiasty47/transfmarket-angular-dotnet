@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'; 
 import { Observable } from 'rxjs';
 import { Player } from '../models/football.models';
-import { environment } from '../../enviroments/enviroments';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root'

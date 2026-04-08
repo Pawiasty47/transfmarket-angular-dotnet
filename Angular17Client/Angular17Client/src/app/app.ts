@@ -1,34 +1,47 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // DODANE: Moduł formularzy
-import { PlayerService } from './services/service';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { PlayerService } from './services/player.service';
 import { Player } from './models/football.models';
+
+// Importy Angular Material
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule], // DODANE: Rejestracja modułu w komponencie
+  imports: [
+    FormsModule, 
+    MatTableModule, 
+    MatButtonModule, 
+    MatInputModule, 
+    MatSelectModule, 
+    MatFormFieldModule, 
+    MatIconModule,
+    MatCardModule
+  ],
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
 export class App implements OnInit {
   private playerService = inject(PlayerService);
   
-  players = signal<Player[]>([]);
+  // ZMIANA: Zamiast sygnału, tworzymy dedykowane źródło danych dla tabeli Material
+  dataSource = new MatTableDataSource<Player>([]);
+
   filterClubId: number = 0;
   filterNationalityId: number = 0;
+  editingPlayerId: number | null = null; 
 
-  editingPlayerId: number | null = null;
+  displayedColumns: string[] = ['id', 'name', 'age', 'position', 'price', 'club', 'nationality', 'actions'];
 
-  // Obiekt do przetrzymywania danych z formularza
   newPlayer: any = {
-    firstName: '',
-    lastName: '',
-    age: 18,
-    weight: 70,
-    price: 0,        // DODANE
-    position: 'Napastnik', // DODANE
-    clubId: 1,
-    nationalityId: 1
+    firstName: '', lastName: '', age: 18, weight: 70, price: 0, position: 'Napastnik', clubId: 1, nationalityId: 1
   };
 
   ngOnInit(): void {
@@ -40,47 +53,30 @@ export class App implements OnInit {
     const nId = this.filterNationalityId !== 0 ? this.filterNationalityId : undefined;
 
     this.playerService.getPlayers(cId, nId).subscribe({
-      next: (data) => this.players.set(data),
+      // ZMIANA: Przekazujemy pobrane dane prosto do właściwości .data
+      next: (data) => this.dataSource.data = data,
       error: (err) => console.error('Błąd pobierania:', err)
     });
   }
 
   editPlayer(player: Player): void {
     this.editingPlayerId = player.id;
-    // Kopiujemy dane do formularza (żeby nie zmieniać tabeli w locie przed zapisem)
     this.newPlayer = { 
-      id: player.id, // Ważne do wysłania w PUT
-      firstName: player.firstName, 
-      lastName: player.lastName, 
-      age: player.age, 
-      weight: player.weight, 
-      price: player.price, 
-      position: player.position, 
-      clubId: player.clubId, 
-      nationalityId: player.nationalityId 
+      id: player.id, firstName: player.firstName, lastName: player.lastName, 
+      age: player.age, weight: player.weight, price: player.price, 
+      position: player.position, clubId: player.clubId, nationalityId: player.nationalityId 
     };
   }
-  
-  // Funkcja DODAWANIA
+
   savePlayer(): void {
     if (this.editingPlayerId) {
-      // TRYB EDYCJI (Update)
       this.playerService.updatePlayer(this.editingPlayerId, this.newPlayer).subscribe({
-        next: () => {
-          console.log('Zaktualizowano gracza!');
-          this.fetchPlayers();
-          this.resetForm();
-        },
+        next: () => { this.fetchPlayers(); this.resetForm(); },
         error: (err) => console.error('Błąd edycji:', err)
       });
     } else {
-      // TRYB DODAWANIA (Create)
       this.playerService.createPlayer(this.newPlayer).subscribe({
-        next: () => {
-          console.log('Dodano gracza!');
-          this.fetchPlayers();
-          this.resetForm();
-        },
+        next: () => { this.fetchPlayers(); this.resetForm(); },
         error: (err) => console.error('Błąd dodawania:', err)
       });
     }
@@ -91,15 +87,11 @@ export class App implements OnInit {
     this.newPlayer = { firstName: '', lastName: '', age: 18, weight: 70, price: 0, position: 'Napastnik', clubId: 1, nationalityId: 1 };
   }
 
-  // Funkcja USUWANIA
   deletePlayer(id: number): void {
     if(confirm('Na pewno chcesz usunąć tego zawodnika?')) {
       this.playerService.deletePlayer(id).subscribe({
-        next: () => {
-          console.log('Usunięto gracza!');
-          // Aktualizujemy sygnał, usuwając gracza z listy bez przeładowania strony
-          this.players.update(currentPlayers => currentPlayers.filter(p => p.id !== id));
-        },
+        // ZMIANA: Po usunięciu po prostu odpalamy fetchPlayers, żeby pobrać nową listę z backendu
+        next: () => this.fetchPlayers(),
         error: (err) => console.error('Błąd usuwania:', err)
       });
     }

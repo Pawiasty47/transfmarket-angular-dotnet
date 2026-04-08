@@ -1,105 +1,152 @@
-<div style="padding: 20px; font-family: sans-serif;">
-  <h2>Zarządzanie Piłkarzami</h2>
-
-  <div style="background-color: #eef; padding: 10px; margin-bottom: 20px; border: 1px solid #ccd;">
-    <strong>Filtruj zawodników:</strong>
-    
-    <select [(ngModel)]="filterClubId" (change)="fetchPlayers()" style="margin-left: 10px; margin-right: 10px;">
-      <option [ngValue]="0">-- Wszystkie Kluby --</option>
-      <option [ngValue]="1">Real Madryt</option>
-      <option [ngValue]="2">FC Barcelona</option>
-      <option [ngValue]="3">Jagiellonia Białystok</option>
-    </select>
-
-    <select [(ngModel)]="filterNationalityId" (change)="fetchPlayers()" style="margin-right: 10px;">
-      <option [ngValue]="0">-- Wszystkie Narodowości --</option>
-      <option [ngValue]="1">Polska</option>
-      <option [ngValue]="2">Hiszpania</option>
-      <option [ngValue]="3">Brazylia</option>
-      <option [ngValue]="4">Anglia</option>
-    </select>
-  </div>
-
-  <div style="background-color: #f9f9f9; padding: 15px; margin-bottom: 20px; border: 1px solid #ddd;">
-    <h3>{{ editingPlayerId ? 'Edytuj zawodnika' : 'Dodaj nowego zawodnika' }}</h3>
-    
-    <input type="text" [(ngModel)]="newPlayer.firstName" placeholder="Imię" style="margin-right: 5px;">
-    <input type="text" [(ngModel)]="newPlayer.lastName" placeholder="Nazwisko" style="margin-right: 5px;">
-    <input type="number" [(ngModel)]="newPlayer.age" placeholder="Wiek" style="margin-right: 5px; width: 60px;">
-    <input type="number" [(ngModel)]="newPlayer.weight" placeholder="Waga" style="margin-right: 5px; width: 60px;">
-    
-    <input type="text" [(ngModel)]="newPlayer.position" placeholder="Pozycja" style="margin-right: 5px; width: 100px;">
-    <input type="number" [(ngModel)]="newPlayer.price" placeholder="Cena mln €" style="margin-right: 5px; width: 80px;">
-    
-    <select [(ngModel)]="newPlayer.clubId" style="margin-right: 5px;">
-      <option [ngValue]="1">Real Madryt</option>
-      <option [ngValue]="2">FC Barcelona</option>
-      <option [ngValue]="3">Jagiellonia Białystok</option>
-    </select>
-
-    <select [(ngModel)]="newPlayer.nationalityId" style="margin-right: 5px;">
-      <option [ngValue]="1">Polska</option>
-      <option [ngValue]="2">Hiszpania</option>
-      <option [ngValue]="3">Brazylia</option>
-      <option [ngValue]="4">Anglia</option>
-    </select>
-
-    <button (click)="savePlayer()" style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; cursor: pointer;">
-      {{ editingPlayerId ? 'Zapisz zmiany' : 'Dodaj Zawodnika' }}
-    </button>
-    
-    @if (editingPlayerId) {
-      <button (click)="resetForm()" style="background-color: #9e9e9e; color: white; border: none; padding: 5px 10px; margin-left: 5px; cursor: pointer;">
-        Anuluj edycję
-      </button>
-    }
-  </div>
+<div style="padding: 20px; max-width: 1200px; margin: 0 auto; font-family: Roboto, sans-serif;">
   
-  <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; text-align: left;">
-    <thead style="background-color: #f2f2f2;">
-      <tr>
-        <th>ID</th>
-        <th>Imię i Nazwisko</th>
-        <th>Wiek</th>
-        <th>Pozycja</th>
-        <th>Cena (mln €)</th>
-        <th>Klub</th>
-        <th>Narodowość</th>
-        <th>Akcje</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (player of players(); track player.id) {
-        <tr>
-          <td>{{ player.id }}</td>
-          <td>{{ player.firstName }} {{ player.lastName }}</td>
-          <td>{{ player.age }}</td>
-          <td>{{ player.position }}</td>
-          <td>{{ player.price }} mln €</td>
-          
-          <td>{{ player.clubName }}</td>
-          
-          <td style="display: flex; align-items: center; gap: 10px;">
-            @if (player.flagUrl) {
-              <img [src]="player.flagUrl" alt="Flaga {{ player.nationalityName }}" style="width: 30px; height: auto; border: 1px solid #ccc; border-radius: 2px;">
-            }
-            {{ player.nationalityName }}
-          </td>
-          
-          <td>
-            <button (click)="editPlayer(player)" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; margin-right: 5px; cursor: pointer;">
-              Edytuj
-            </button>
-            <button (click)="deletePlayer(player.id)" style="background-color: #f44336; color: white; border: none; padding: 5px 10px; cursor: pointer;">
-              Usuń
-            </button>
-          </td>
-        </tr>
-      } @empty {
-        <tr>
-          <td colspan="8" style="text-align: center;">Ładowanie danych lub brak zawodników w bazie...</td>
-        </tr>
+  <h1 style="color: #3f51b5; margin-bottom: 20px;">Zarządzanie Piłkarzami</h1>
+
+  <mat-card style="margin-bottom: 20px; padding: 15px;">
+    <h3>Filtruj zawodników</h3>
+    <div style="display: flex; gap: 15px;">
+      <mat-form-field appearance="outline">
+        <mat-label>Klub</mat-label>
+        <mat-select [(ngModel)]="filterClubId" (selectionChange)="fetchPlayers()">
+          <mat-option [value]="0">-- Wszystkie Kluby --</mat-option>
+          <mat-option [value]="1">Real Madryt</mat-option>
+          <mat-option [value]="2">FC Barcelona</mat-option>
+          <mat-option [value]="3">Jagiellonia Białystok</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Narodowość</mat-label>
+        <mat-select [(ngModel)]="filterNationalityId" (selectionChange)="fetchPlayers()">
+          <mat-option [value]="0">-- Wszystkie --</mat-option>
+          <mat-option [value]="1">Polska</mat-option>
+          <mat-option [value]="2">Hiszpania</mat-option>
+          <mat-option [value]="3">Brazylia</mat-option>
+          <mat-option [value]="4">Anglia</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-card>
+
+  <mat-card style="margin-bottom: 30px; padding: 20px;">
+    <h2 style="margin-top: 0;">{{ editingPlayerId ? 'Edytuj zawodnika' : 'Dodaj nowego zawodnika' }}</h2>
+    
+    <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+      <mat-form-field appearance="fill">
+        <mat-label>Imię</mat-label>
+        <input matInput [(ngModel)]="newPlayer.firstName">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nazwisko</mat-label>
+        <input matInput [(ngModel)]="newPlayer.lastName">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="width: 100px;">
+        <mat-label>Wiek</mat-label>
+        <input matInput type="number" [(ngModel)]="newPlayer.age">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="width: 120px;">
+        <mat-label>Pozycja</mat-label>
+        <input matInput [(ngModel)]="newPlayer.position">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="width: 120px;">
+        <mat-label>Cena (mln €)</mat-label>
+        <input matInput type="number" [(ngModel)]="newPlayer.price">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Klub</mat-label>
+        <mat-select [(ngModel)]="newPlayer.clubId">
+          <mat-option [value]="1">Real Madryt</mat-option>
+          <mat-option [value]="2">FC Barcelona</mat-option>
+          <mat-option [value]="3">Jagiellonia</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Kraj</mat-label>
+        <mat-select [(ngModel)]="newPlayer.nationalityId">
+          <mat-option [value]="1">Polska</mat-option>
+          <mat-option [value]="2">Hiszpania</mat-option>
+          <mat-option [value]="3">Brazylia</mat-option>
+          <mat-option [value]="4">Anglia</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div style="margin-top: 15px;">
+      <button mat-raised-button color="primary" (click)="savePlayer()" style="margin-right: 10px;">
+        <mat-icon>{{ editingPlayerId ? 'save' : 'add' }}</mat-icon>
+        {{ editingPlayerId ? 'Zapisz zmiany' : 'Dodaj' }}
+      </button>
+      
+      @if (editingPlayerId) {
+        <button mat-stroked-button color="warn" (click)="resetForm()">Anuluj</button>
       }
-    </tbody>
+    </div>
+  </mat-card>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
+    
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let player"> {{player.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Zawodnik </th>
+      <td mat-cell *matCellDef="let player"> <strong>{{player.firstName}} {{player.lastName}}</strong> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="age">
+      <th mat-header-cell *matHeaderCellDef> Wiek </th>
+      <td mat-cell *matCellDef="let player"> {{player.age}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> Pozycja </th>
+      <td mat-cell *matCellDef="let player"> {{player.position}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> Wartość </th>
+      <td mat-cell *matCellDef="let player"> {{player.price}} mln € </td>
+    </ng-container>
+
+    <ng-container matColumnDef="club">
+      <th mat-header-cell *matHeaderCellDef> Klub </th>
+      <td mat-cell *matCellDef="let player"> {{player.clubName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nationality">
+      <th mat-header-cell *matHeaderCellDef> Kraj </th>
+      <td mat-cell *matCellDef="let player"> 
+        <div style="display: flex; align-items: center; gap: 8px;">
+          @if (player.flagUrl) {
+            <img [src]="player.flagUrl" alt="flaga" style="width: 24px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+          }
+          {{player.nationalityName}}
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Akcje </th>
+      <td mat-cell *matCellDef="let player" style="text-align: right;">
+        <button mat-icon-button color="accent" (click)="editPlayer(player)" title="Edytuj">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deletePlayer(player.id)" title="Usuń">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="transition: background 0.2s;"></tr>
   </table>
+
 </div>
