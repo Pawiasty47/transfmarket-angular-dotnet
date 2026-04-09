@@ -1,7 +1,7 @@
 .app-layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Zajmuje całą wysokość ekranu */
+  min-height: 100vh; 
 }
 
 .main-content {
@@ -10,7 +10,7 @@
 }
 
 .hero-banner {
-  background-image: url('/images/Stadion.jpg'); /* Podmień na poprawną ścieżkę */
+  background-image: url('/images/Stadion.jpg'); 
 
   background-color: rgba(0, 0, 0, 0.8); 
   
@@ -198,12 +198,11 @@
 }
 .table-container {
   border-radius: 8px;
-  overflow: hidden; /* Pozwala zaokrąglić rogi samej tabeli */
+  overflow: hidden; 
   box-shadow: 0 5px 15px rgba(0,0,0,0.08);
   border: 1px solid #e0e0e0;
 }
 
-/* Wyróżnienie nagłówków tabeli */
 ::ng-deep .mat-mdc-header-cell {
   background-color: #f8f9fa !important;
   color: #455a64 !important;
@@ -213,7 +212,67 @@
   letter-spacing: 0.5px;
 }
 
-/* Delikatne hoverowanie na wierszach */
 ::ng-deep .mat-mdc-row:hover {
   background-color: #f1f5f9;
+}
+
+.filters-card {
+  margin-bottom: 20px;
+  padding: 15px;
+}
+
+.filters-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap; 
+  gap: 15px;
+}
+
+.filter-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-field {
+  margin-bottom: -1.25em; 
+  min-width: 200px;
+  flex: 1; 
+}
+
+
+.table-responsive-container {
+  overflow-x: auto; 
+  width: 100%;
+  border-radius: 4px;
+}
+
+table {
+  min-width: 800px; 
+}
+
+
+@media (max-width: 768px) {
+  
+  .filters-wrapper {
+    flex-direction: column;
+    align-items: stretch; 
+  }
+
+  .filter-header {
+    margin-bottom: 5px;
+  }
+
+  .filter-field {
+    margin-bottom: 0; 
+    width: 100%;
+  }
+
+  .stats-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+    gap: 10px;
+  }
 }

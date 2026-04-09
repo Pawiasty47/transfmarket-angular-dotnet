@@ -138,12 +138,14 @@
           </mat-expansion-panel>
       </mat-accordion>
 
-      <mat-card style="margin-bottom: 20px; padding: 15px; display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
-        <div style="display: flex; gap: 15px; align-items: center;">
-          <mat-icon style="color: #757575;">filter_list</mat-icon>
-          <strong style="margin-right: 10px;">Filtruj:</strong>
+      <mat-card class="filters-card">
+        <div class="filters-wrapper">
+          <div class="filter-header">
+            <mat-icon style="color: #757575;">filter_list</mat-icon>
+            <strong>Filtruj:</strong>
+          </div>
           
-          <mat-form-field appearance="outline" style="margin-bottom: -1.25em;">
+          <mat-form-field appearance="outline" class="filter-field">
             <mat-label>Klub</mat-label>
             <mat-select [(ngModel)]="filterClubId" (selectionChange)="fetchPlayers()">
               <mat-option [value]="0">-- Wszystkie Kluby --</mat-option>
@@ -153,7 +155,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" style="margin-bottom: -1.25em;">
+          <mat-form-field appearance="outline" class="filter-field">
             <mat-label>Narodowość</mat-label>
             <mat-select [(ngModel)]="filterNationalityId" (selectionChange)="fetchPlayers()">
               <mat-option [value]="0">-- Wszystkie --</mat-option>
@@ -165,6 +167,7 @@
           </mat-form-field>
         </div>
       </mat-card>
+
       <div class="stats-banner">
         <div class="stats-icon">
           <mat-icon>monetization_on</mat-icon>
@@ -174,69 +177,72 @@
           <span class="stats-value">{{ totalValue }} mln €</span>
         </div>
       </div>
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
-        
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef> ID </th>
-          <td mat-cell *matCellDef="let player"> {{player.id}} </td>
-        </ng-container>
+      
+      <div class="table-responsive-container mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" style="width: 100%;">
+          
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let player"> {{player.id}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Zawodnik </th>
-          <td mat-cell *matCellDef="let player"> 
-            <strong>{{player.firstName}} {{player.lastName}}</strong>
-            @if (player.isHot) {
-              <span style="margin-left: 5px; font-size: 1.2rem;" title="Zawodnik w świetnej formie!">🔥</span>
-            }
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="age">
-          <th mat-header-cell *matHeaderCellDef> Wiek </th>
-          <td mat-cell *matCellDef="let player"> {{player.age}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="position">
-          <th mat-header-cell *matHeaderCellDef> Pozycja </th>
-          <td mat-cell *matCellDef="let player"> {{player.position}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="price">
-          <th mat-header-cell *matHeaderCellDef> Wartość </th>
-          <td mat-cell *matCellDef="let player"> {{player.price}} mln € </td>
-        </ng-container>
-
-        <ng-container matColumnDef="club">
-          <th mat-header-cell *matHeaderCellDef> Klub </th>
-          <td mat-cell *matCellDef="let player"> {{player.clubName}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="nationality">
-          <th mat-header-cell *matHeaderCellDef> Kraj </th>
-          <td mat-cell *matCellDef="let player"> 
-            <div style="display: flex; align-items: center; gap: 8px;">
-              @if (player.flagUrl) {
-                <img [src]="player.flagUrl" alt="flaga" style="width: 24px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Zawodnik </th>
+            <td mat-cell *matCellDef="let player"> 
+              <strong>{{player.firstName}} {{player.lastName}}</strong>
+              @if (player.isHot) {
+                <span style="margin-left: 5px; font-size: 1.2rem;" title="Zawodnik w świetnej formie!">🔥</span>
               }
-              {{player.nationalityName}}
-            </div>
-          </td>
-        </ng-container>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="age">
+            <th mat-header-cell *matHeaderCellDef> Wiek </th>
+            <td mat-cell *matCellDef="let player"> {{player.age}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Akcje </th>
-          <td mat-cell *matCellDef="let player" style="text-align: right;">
-            <button mat-icon-button color="accent" (click)="editPlayer(player)" title="Edytuj">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="deletePlayer(player.id)" title="Usuń">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> Pozycja </th>
+            <td mat-cell *matCellDef="let player"> {{player.position}} </td>
+          </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="transition: background 0.2s;"></tr>
-      </table>
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef> Wartość </th>
+            <td mat-cell *matCellDef="let player"> {{player.price}} mln € </td>
+          </ng-container>
+
+          <ng-container matColumnDef="club">
+            <th mat-header-cell *matHeaderCellDef> Klub </th>
+            <td mat-cell *matCellDef="let player"> {{player.clubName}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nationality">
+            <th mat-header-cell *matHeaderCellDef> Kraj </th>
+            <td mat-cell *matCellDef="let player"> 
+              <div style="display: flex; align-items: center; gap: 8px;">
+                @if (player.flagUrl) {
+                  <img [src]="player.flagUrl" alt="flaga" style="width: 24px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+                }
+                {{player.nationalityName}}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Akcje </th>
+            <td mat-cell *matCellDef="let player" style="text-align: right;">
+              <button mat-icon-button color="accent" (click)="editPlayer(player)" title="Edytuj">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deletePlayer(player.id)" title="Usuń">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="transition: background 0.2s;"></tr>
+        </table>
+      </div>
 
     </div>
   </main>
