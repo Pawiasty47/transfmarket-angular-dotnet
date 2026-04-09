@@ -17,6 +17,7 @@ builder.Services.AddCors(options =>
                           .AllowAnyHeader());
 });
 builder.Services.AddHttpClient<ICountryApiService, CountryApiService>();
+builder.Services.AddHttpClient<Testx.Services.NbpService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

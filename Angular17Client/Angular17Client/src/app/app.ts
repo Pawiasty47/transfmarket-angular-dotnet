@@ -51,7 +51,7 @@ export class App implements OnInit {
   filterClubId: number = 0;
   filterNationalityId: number = 0;
   editingPlayerId: number | null = null; 
-
+  currentEurRate: number = 0;
   totalValue: number = 0;
   totalValueLabel: string = 'Łączna wartość całej bazy:';
 
@@ -63,6 +63,7 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     this.fetchPlayers();
+    this.fetchEurRate();
   }
 
   fetchPlayers(): void {
@@ -83,8 +84,22 @@ export class App implements OnInit {
       error: (err) => console.error('Błąd pobierania:', err)
     });
   }
+  fetchEurRate(): void {
+    this.playerService.getEurExchangeRate().subscribe({
+      next: (rate) => {
+        // Nasz backend C# zwraca od razu czystą liczbę (np. 4.29)
+        this.currentEurRate = rate; 
+        console.log('Kurs pomyślnie pobrany z backendu:', this.currentEurRate);
+      },
+      error: (err) => {
+        console.error('Backend zwrócił błąd przy kursie:', err);
+        this.currentEurRate = 4.30; // Zabezpieczenie awaryjne na froncie
+      }
+    });
+  }
 
-fetchTotalValue(): void {
+
+  fetchTotalValue(): void {
     const hasClub = this.filterClubId && this.filterClubId !== 0;
     const hasNationality = this.filterNationalityId && this.filterNationalityId !== 0;
 
