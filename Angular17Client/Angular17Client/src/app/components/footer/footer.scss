@@ -2,8 +2,8 @@
   background: linear-gradient(90deg, #001f3f 0%, #003366 100%);
   color: white;
   padding: 30px 24px 15px;
-  margin-top: 50px; /* Odpychamy stopkę od reszty strony */
-  box-shadow: 0 -4px 12px rgba(0,0,0,0.2); /* Cień skierowany w górę */
+  margin-top: 50px; 
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.2); /* cienie */
 }
 
 .footer-content {
@@ -31,7 +31,6 @@
   width: 28px;
 }
 
-/* Identyczny styl tekstu jak w Headerze (nieco mniejszy) */
 .brand-text {
   font-family: 'Impact', 'Arial Black', sans-serif;
   font-size: 1.4rem;
@@ -54,7 +53,6 @@
     font-size: 0.95rem;
     transition: color 0.3s ease;
 
-    /* Efekt hover (najazd myszką) w kolorze naszego zielonego ognia/banera */
     &:hover {
       color: #4caf50;
     }
@@ -72,7 +70,6 @@
   }
 }
 
-/* Responsywność na telefony */
 @media (max-width: 600px) {
   .footer-content {
     flex-direction: column;

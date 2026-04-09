@@ -1,4 +1,6 @@
-<div class="app-layout">
+<div class="app-layout" animate.enter="fade-in">
+
+<div class="app-layout fade-in">
   
   <app-header></app-header>
 
@@ -256,7 +258,12 @@
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="transition: background 0.2s;"></tr>
+
+          <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;" 
+              animate.enter="slide-in" 
+              animate.leave="slide-out"
+              [style.animation-delay.ms]="i * 50">
+          </tr>
         </table>
       </div>
 

@@ -276,3 +276,38 @@ table {
     gap: 10px;
   }
 }
+
+@keyframes fadeIn {
+  from { 
+    /* 0 to absolutna czerń - strona jest wygaszona */
+    filter: brightness(0); 
+    transform: translateY(20px); 
+  }
+  to { 
+    /* 1 to 100% naturalnych kolorów Twojego tła i interfejsu */
+    filter: brightness(1); 
+    transform: translateY(0); 
+  }
+}
+
+.fade-in {
+  animation: fadeIn 1500ms ease-out forwards; 
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.95); }
+}
+
+.slide-in {
+  /* 'both' w css to magia - trzyma element w 0% opacity zanim minie jego czas opóźnienia! */
+  animation: slideIn 400ms cubic-bezier(0.25, 0.8, 0.25, 1) both;
+}
+
+.slide-out {
+  animation: slideOut 300ms ease-in both;
+}
