@@ -9,7 +9,6 @@ namespace Testx.Models
         public DateTime FoundationDate { get; set; }
         public int Trophies { get; set; }
 
-        // Relacja: 1 Klub ma wielu piłkarzy
-        public ICollection<Player>? Players { get; set; }
+        public ICollection<Player>? Players { get; set; } //jeden klub moze miec wielu zawodnikow
     }
 }

@@ -20,9 +20,7 @@ namespace Testx.Services
         {
             var countryMapper = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
     {
-        { "Anglia", "United Kingdom" }, 
-        { "Włochy", "Italy" },          
-        { "Niemcy", "Germany" }
+        { "Anglia", "United Kingdom" }
     };
 
             var searchName = countryMapper.ContainsKey(countryName) ? countryMapper[countryName] : countryName;

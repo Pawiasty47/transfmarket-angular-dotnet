@@ -6,10 +6,10 @@ using Testx.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))); //konfigracja bazy, zapisywanie do projektu app.db
 
 
-builder.Services.AddCors(options =>
+builder.Services.AddCors(options => //polaczenie z angurlarem
 {
     options.AddPolicy("AllowAngularApp",
         builder => builder.WithOrigins("http://localhost:4200") 
@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddHttpClient<ICountryApiService, CountryApiService>();
 builder.Services.AddHttpClient<Testx.Services.NbpService>();
 
-builder.Services.AddControllers().AddJsonOptions(options =>
+builder.Services.AddControllers().AddJsonOptions(options => 
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
