@@ -1,4 +1,4 @@
-.custom-header {
+.custom-header { /*styl dla nagłówka*/
   background: linear-gradient(90deg, #001f3f 0%, #003366 100%);
   color: white;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -8,13 +8,13 @@
   padding: 0 24px;
 }
 
-.logo-container {
+.logo-container { /*kontener dla logo i nazwy marki*/
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.soccer-icon {
+.soccer-icon { /*ikona piłki nożnej w logo*/
   font-size: 36px;
   height: 36px;
   width: 36px;
@@ -22,7 +22,7 @@
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 
-.brand-text {
+.brand-text { /*tekst w logo*/
   font-family: 'Impact', 'Arial Black', sans-serif;
   font-size: 1.8rem;
   font-weight: 800;
@@ -30,6 +30,6 @@
   letter-spacing: 1.5px;
   font-style: italic;
   background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; /* sprawia, że gradient jest nakładany tylko na tekst */
+  -webkit-text-fill-color: transparent; /* sprawia, że tekst jest przezroczysty, a widoczny jest tylko gradient */
 }

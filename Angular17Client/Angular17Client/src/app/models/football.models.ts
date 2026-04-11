@@ -1,3 +1,5 @@
+// Modele danych dla aplikacji 
+
 export interface Nationality {
   id: number;
   name: string;

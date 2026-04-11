@@ -7,14 +7,14 @@ import { environment } from '../../environments/environments';
 @Injectable({
   providedIn: 'root'
 })
-export class PlayerService {
+export class PlayerService { //serwis do zarządzania danymi zawodników, komunikujący się z backendem poprzez HTTP
   private http = inject(HttpClient);
   
   private baseUrl = `${environment.apiUrl}/api`;
 
   private apiUrl = `${this.baseUrl}/Players`;
 
-  getPlayers(clubId?: number, nationalityId?: number): Observable<Player[]> {
+  getPlayers(clubId?: number, nationalityId?: number): Observable<Player[]> { //pobieranie listy zawodników z opcjonalnymi filtrami dla klubu i narodowości
     let params = new HttpParams();
     
     if (clubId) {
@@ -27,26 +27,26 @@ export class PlayerService {
     return this.http.get<Player[]>(this.apiUrl, { params: params });
   }
 
-  createPlayer(player: Player): Observable<Player> {
+  createPlayer(player: Player): Observable<Player> { //tworzenie nowego zawodnika poprzez wysłanie danych do backendu
     return this.http.post<Player>(this.apiUrl, player);
   }
 
-  updatePlayer(id: number, player: Player): Observable<void> {
+  updatePlayer(id: number, player: Player): Observable<void> { //aktualizacja danych istniejącego zawodnika poprzez wysłanie zaktualizowanych danych do backendu
     return this.http.put<void>(`${this.apiUrl}/${id}`, player);
   }
   
-  deletePlayer(id: number): Observable<void> {
+  deletePlayer(id: number): Observable<void> { //usuwanie zawodnika poprzez wysłanie żądania do backendu z ID zawodnika, który ma zostać usunięty
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  getClubTotalValue(clubId: number): Observable<number> {
+  getClubTotalValue(clubId: number): Observable<number> { //pobieranie łącznej wartości rynkowej zawodników z danego klubu poprzez wysłanie żądania do backendu z ID klubu
     return this.http.get<number>(`${this.baseUrl}/clubs/${clubId}/total-value`);
   }
 
-  getNationalityTotalValue(nationalityId: number): Observable<number> {
+  getNationalityTotalValue(nationalityId: number): Observable<number> { // pobieranie łącznej wartości rynkowej zawodników z danej narodowości poprzez wysłanie żądania do backendu z ID narodowości
     return this.http.get<number>(`${this.baseUrl}/nationalities/${nationalityId}/total-value`);
   }
-  getEurExchangeRate(): Observable<number> {
+  getEurExchangeRate(): Observable<number> { //pobieranie aktualnego kursu wymiany euro poprzez wysłanie żądania do backendu, który zwraca kurs euro
     return this.http.get<number>(`${this.baseUrl}/ExchangeRates/eur`);
   }
 }

@@ -5,10 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-footer',
   standalone: true,
   imports: [MatIconModule],
-  templateUrl: './footer.html', // lub footer.component.html
-  styleUrl: './footer.scss'     // lub footer.component.scss
+  templateUrl: './footer.html', 
+  styleUrl: './footer.scss'     
 })
 export class FooterComponent {
-  // Pobieramy aktualny rok, żeby stopka zawsze była na czasie!
+  // Pobieramy aktualny rok, do stopki
   currentYear: number = new Date().getFullYear();
 }

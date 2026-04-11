@@ -1,15 +1,15 @@
-.app-layout {
+.app-layout { /*kontener główny całej aplikacji, ustawiony na flex column, aby header był na górze, a reszta zawartości zajmowała resztę wysokości*/
   display: flex;
   flex-direction: column;
   min-height: 100vh; 
 }
 
-.main-content {
+.main-content { /*kontener na główną zawartość aplikacji, ustawiony na flex, aby łatwo rozdzielić sekcję aktualności i reklam od sekcji CRUD*/
   flex: 1; 
   background-color: #f8f9fa;
 }
 
-.hero-banner {
+.hero-banner { /*baner powitalny z tytułem i podtytułem, z tłem stadionu, ciemnym nakładką i efektem blur dla lepszej czytelności tekstu*/
   background-image: url('/images/Stadion.jpg'); 
 
   background-color: rgba(0, 0, 0, 0.8); 
@@ -35,7 +35,7 @@
   box-shadow: inset 0 -5px 10px rgba(0,0,0,0.1);
 }
 
-.hero-title {
+.hero-title { /*tytuł w banerze, z dużą czcionką, gradientem i cieniem dla lepszej czytelności*/
   font-size: clamp(4rem, 8vw, 7.5rem); 
   
   margin: 0 0 15px 0; 
@@ -45,19 +45,19 @@
   text-shadow: 2px 2px 5px rgba(247, 244, 244, 0.5);
 }
 
-.hero-subtitle {
+.hero-subtitle { /*podtytuł w banerze, z mniejszą czcionką, gradientem i cieniem dla lepszej czytelności*/
   font-size: clamp(1rem, 2vw, 1.3rem);
   margin: 0;
   opacity: 0.8;
   max-width: 600px;
 }
 
-.crud-container {
+.crud-container { /*kontener na sekcję CRUD, z paddingiem i maksymalną szerokością dla lepszej czytelności i estetyki*/
   padding: 40px 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
-.dashboard-top-section {
+.dashboard-top-section { /*sekcja z aktualnościami i reklamami, ustawiona na grid, aby łatwo rozdzielić główną kolumnę z aktualnościami od bocznego paska z reklamami*/
   display: grid;
   grid-template-columns: 2.5fr 1fr;
   gap: 20px;
@@ -67,21 +67,21 @@
   align-items: start;
 }
 
-.main-news-card {
+.main-news-card { /*główna karta z aktualnościami, z paddingiem 0 i overflow hidden, aby zdjęcie zajmowało całą kartę bez odstępów */
   padding: 0 !important;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-.news-image-placeholder {
+.news-image-placeholder { /*prosty placeholder na zdjęcie aktualności, z gradientem i cieniem dla lepszej estetyki*/
   height: 350px;
   /* Prosty, sportowy gradient imitujący brakujące zdjęcie na razie */
   background: linear-gradient(135deg, #1a237e 0%, #e91e63 100%); 
   position: relative;
 }
 
-.news-badge {
+.news-badge { /*nakładka z napisem "Aktualności" w rogu zdjęcia aktualności, z tłem i cieniem dla lepszej czytelności*/
   position: absolute;
   bottom: 15px;
   left: 15px;
@@ -94,7 +94,7 @@
   border-radius: 2px;
 }
 
-.news-content {
+.news-content { /*zawartość aktualności, z paddingiem i flex column, aby łatwo rozdzielić tytuł, opis i link do czytania więcej*/
   background-color: #001f3f;
   color: white;
   padding: 20px;
@@ -102,13 +102,13 @@
   align-items: center;
 }
 
-.sidebar {
+.sidebar { /*boczny pasek z reklamami i najczęściej wyświetlanymi zawodnikami, z paddingiem i flex column, aby łatwo rozdzielić poszczególne reklamy i sekcje*/
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.ad-placeholder {
+.ad-placeholder { /*prosty placeholder na reklamę, z gradientem i cieniem dla lepszej estetyki*/
   height: 180px;
   background-color: #e0e0e0;
   display: flex;
@@ -118,7 +118,7 @@
   font-weight: 500;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 900px) { /*dla ekranów poniżej 900px, ustawiamy dashboard na jedną kolumnę, a reklamę na dole, aby lepiej wykorzystać przestrzeń i poprawić czytelność na urządzeniach mobilnych*/
   .dashboard-top-section {
     grid-template-columns: 1fr;
   }
@@ -144,7 +144,7 @@
   font-weight: 500;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 900px) { /* dla ekranów poniżej 900px, ustawiamy dashboard na jedną kolumnę, a reklamę na dole, aby lepiej wykorzystać przestrzeń i poprawić czytelność na urządzeniach mobilnych */
   .dashboard-top-section {
     grid-template-columns: 1fr;
   }
@@ -153,7 +153,7 @@
     display: none !important;
   }
 }
-.stats-banner {
+.stats-banner { /*baner z łączną wartością rynkową zawodników, z możliwością przeliczenia na PLN po aktualnym kursie euro, z gradientem, cieniem i zaokrąglonymi rogami dla lepszej estetyki*/
   background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
   color: white;
   border-radius: 8px;
@@ -165,7 +165,7 @@
   transition: all 0.3s ease;
 }
 
-.stats-icon {
+.stats-icon { /*ikona w banerze z łączną wartością rynkową, z tłem, cieniem i zaokrąglonymi rogami dla lepszej estetyki*/
   background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   padding: 12px;
@@ -173,13 +173,13 @@
   display: flex;
 }
 
-.stats-icon mat-icon {
+.stats-icon mat-icon { /*ikona monet w banerze z łączną wartością rynkową*/
   font-size: 32px;
   height: 32px;
   width: 32px;
 }
 
-.stats-info {
+.stats-info { /*zawartość tekstowa w banerze z łączną wartością rynkową, z flex column*/
   display: flex;
   flex-direction: column;
 }
@@ -203,7 +203,7 @@
   border: 1px solid #e0e0e0;
 }
 
-::ng-deep .mat-mdc-header-cell {
+::ng-deep .mat-mdc-header-cell { /*styl dla nagłówków tabeli, z tłem, kolorem */
   background-color: #f8f9fa !important;
   color: #455a64 !important;
   font-weight: 700 !important;
@@ -212,7 +212,7 @@
   letter-spacing: 0.5px;
 }
 
-::ng-deep .mat-mdc-row:hover {
+::ng-deep .mat-mdc-row:hover { /*efekt hover dla wierszy tabeli, z tłem, kolorem */
   background-color: #f1f5f9;
 }
 
@@ -242,7 +242,7 @@
 }
 
 
-.table-responsive-container {
+.table-responsive-container { /*kontener na tabelę z listą zawodników, z overflow auto i minimalną szerokością dla lepszej czytelności i estetyki, oraz responsywnością na urządzenia mobilne*/
   overflow-x: auto; 
   width: 100%;
   border-radius: 4px;
@@ -253,7 +253,11 @@ table {
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 768px) { /*dla ekranów poniżej 768px, ustawiamy filtry i baner z łączną wartością rynkową na kolumnę, aby lepiej wykorzystać przestrzeń i poprawić czytelność na urządzeniach mobilnych*/
+   .filters-wrapper {
+    flex-direction: column;
+    align-items: stretch; 
+  }
   
   .filters-wrapper {
     flex-direction: column;
@@ -284,13 +288,13 @@ table {
     transform: translateY(20px); 
   }
   to { 
-    /* 1 to 100% naturalnych kolorów Twojego tła i interfejsu */
+    /* 1 to 100% naturalnych kolorów  tła i interfejsu */
     filter: brightness(1); 
     transform: translateY(0); 
   }
 }
 
-.fade-in {
+.fade-in { /* klasa do animacji fade-in, z efektem delikatnego przesunięcia  */
   animation: fadeIn 1500ms ease-out forwards; 
 }
 @keyframes slideIn {
@@ -298,13 +302,12 @@ table {
   to { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes slideOut {
+@keyframes slideOut { /* animacja slide-out, dla tabeli */
   from { opacity: 1; transform: scale(1); }
   to { opacity: 0; transform: scale(0.95); }
 }
 
 .slide-in {
-  /* 'both' w css to magia - trzyma element w 0% opacity zanim minie jego czas opóźnienia! */
   animation: slideIn 400ms cubic-bezier(0.25, 0.8, 0.25, 1) both;
 }
 

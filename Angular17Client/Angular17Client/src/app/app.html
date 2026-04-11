@@ -4,15 +4,18 @@
   
   <app-header></app-header>
 
-  <main class="main-content">
-    
-    <div class="hero-banner">
+  <!-- // główna zawartość aplikacji, zawierająca baner powitalny, sekcję z aktualnościami i reklamami, oraz CRUD do zarządzania zawodnikami -->
+
+  <main class="main-content"> 
+    <!-- //baner powitalny z tytułem i podtytułem -->
+    <div class="hero-banner"> 
       <h1 class="hero-title">Transfmarket</h1>
       <p class="hero-subtitle">Zarządzaj transferami, analizuj wartości i buduj drużynę marzeń.</p>
     </div>
 
-    <div class="dashboard-top-section">
+    <!-- //sekcja z aktualnościami i reklamami, podzielona na główną kolumnę z aktualnościami oraz boczny pasek z reklamami i najczęściej wyświetlanymi zawodnikami -->
       
+    <div class="dashboard-top-section"> 
       <div class="main-column">
         <mat-card class="main-news-card">
           <div class="news-image-placeholder">
@@ -29,7 +32,9 @@
         </mat-card>
       </div>
 
-      <div class="sidebar">
+      <!-- //boczny pasek z reklamami i najczęściej wyświetlanymi zawodnikami -->
+
+      <div class="sidebar"> 
         
         <mat-card class="ad-card" style="padding: 0; overflow: hidden;">
           <div class="ad-placeholder">Miejsce na Twoją Reklamę</div>
@@ -61,7 +66,10 @@
         
       </div>
     </div>
-    <div class="crud-container">
+
+    <!-- //sekcja CRUD do zarządzania zawodnikami, zawierająca nagłówek, formularz do dodawania/edycji zawodników, filtry oraz tabelę z listą zawodników -->
+
+    <div class="crud-container"> 
       
       <h2 style="margin: 0 0 20px 0; color: #3f51b5; text-align: center; font-size: 2rem;">Baza Zawodników</h2>
 
@@ -140,6 +148,8 @@
           </mat-expansion-panel>
       </mat-accordion>
 
+      <!-- //filtry do sortowania zawodników po klubie i narodowości, z możliwością przeliczenia wartości rynkowej na PLN po aktualnym kursie euro -->
+
       <mat-card class="filters-card">
         <div class="filters-wrapper">
           <div class="filter-header">
@@ -170,6 +180,8 @@
         </div>
       </mat-card>
 
+      <!-- // baner z łączną wartością rynkową zawodników, z możliwością przeliczenia na PLN po aktualnym kursie euro -->
+
       <div class="stats-banner">
         <div class="stats-icon">
           <mat-icon>monetization_on</mat-icon>
@@ -188,6 +200,8 @@
         </div>
       </div>
       
+      <!-- // tabela z listą zawodników, z możliwością edycji i usuwania każdego zawodnika, oraz animacjami przy dodawaniu/usuwaniu zawodników -->
+
       <div class="table-responsive-container mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" style="width: 100%;">
           

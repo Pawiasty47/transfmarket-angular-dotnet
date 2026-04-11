@@ -37,7 +37,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 export class App implements OnInit {
   private playerService = inject(PlayerService);
   
-  // ZMIANA: Zamiast sygnału, tworzymy dedykowane źródło danych dla tabeli Material
+  // Zamiast sygnału, tworzymy dedykowane źródło danych dla tabeli Material
   dataSource = new MatTableDataSource<Player>([]);
 
   // Sztuczne dane do widgetu "Najczęściej wyświetlani"
@@ -66,13 +66,12 @@ export class App implements OnInit {
     this.fetchEurRate();
   }
 
-  fetchPlayers(): void {
+  fetchPlayers(): void { // Pobieramy zawodników z backendu, z uwzględnieniem filtrów
     const cId = this.filterClubId !== 0 ? this.filterClubId : undefined;
     const nId = this.filterNationalityId !== 0 ? this.filterNationalityId : undefined;
 
     this.playerService.getPlayers(cId, nId).subscribe({
       next: (data) => {
-        // Logika biznesowa: Ogień dostają tylko zawodnicy warci 100 mln lub więcej!
         const playersWithFire = data.map(player => ({
           ...player,
           isHot: player.price >= 100 
@@ -87,7 +86,7 @@ export class App implements OnInit {
   fetchEurRate(): void {
     this.playerService.getEurExchangeRate().subscribe({
       next: (rate) => {
-        // Nasz backend C# zwraca od razu czystą liczbę (np. 4.29)
+        
         this.currentEurRate = rate; 
         console.log('Kurs pomyślnie pobrany z backendu:', this.currentEurRate);
       },
@@ -103,12 +102,12 @@ export class App implements OnInit {
     const hasClub = this.filterClubId && this.filterClubId !== 0;
     const hasNationality = this.filterNationalityId && this.filterNationalityId !== 0;
 
-    // 1. ZAZNACZONE OBA FILTRY (np. FC Barcelona + Polska)
+    // ZAZNACZONE OBA FILTRY
     if (hasClub && hasNationality) {
       this.totalValue = this.dataSource.data.reduce((sum, player) => sum + player.price, 0);
       this.totalValueLabel = 'Wartość zawodników (Wybrany Klub i Kraj):';
     } 
-    // 2. ZAZNACZONY TYLKO KLUB
+    // ZAZNACZONY TYLKO KLUB
     else if (hasClub) {
       this.playerService.getClubTotalValue(this.filterClubId).subscribe({
         next: (val) => {
@@ -117,7 +116,7 @@ export class App implements OnInit {
         }
       });
     } 
-    // 3. ZAZNACZONY TYLKO KRAJ
+    //ZAZNACZONY TYLKO KRAJ
     else if (hasNationality) {
       this.playerService.getNationalityTotalValue(this.filterNationalityId).subscribe({
         next: (val) => {
@@ -126,14 +125,14 @@ export class App implements OnInit {
         }
       });
     } 
-    // 4. BRAK FILTRÓW
+    // BRAK FILTRÓW
     else {
       this.totalValue = this.dataSource.data.reduce((sum, player) => sum + player.price, 0);
       this.totalValueLabel = 'Łączna wartość całej bazy:';
     }
   }
 
-  editPlayer(player: Player): void {
+  editPlayer(player: Player): void { // Ustawiamy ID edytowanego zawodnika i kopiujemy jego dane do newPlayer
     this.editingPlayerId = player.id;
     this.newPlayer = { 
       id: player.id, firstName: player.firstName, lastName: player.lastName, 
@@ -142,7 +141,7 @@ export class App implements OnInit {
     };
   }
 
-  savePlayer(): void {
+  savePlayer(): void { 
     if (this.editingPlayerId) {
       this.playerService.updatePlayer(this.editingPlayerId, this.newPlayer).subscribe({
         next: () => { this.fetchPlayers(); this.resetForm(); },
@@ -164,7 +163,7 @@ export class App implements OnInit {
   deletePlayer(id: number): void {
     if(confirm('Na pewno chcesz usunąć tego zawodnika?')) {
       this.playerService.deletePlayer(id).subscribe({
-        // ZMIANA: Po usunięciu po prostu odpalamy fetchPlayers, żeby pobrać nową listę z backendu
+        // Po usunięciu po prostu odpalamy fetchPlayers, żeby pobrać nową listę z backendu
         next: () => this.fetchPlayers(),
         error: (err) => console.error('Błąd usuwania:', err)
       });
