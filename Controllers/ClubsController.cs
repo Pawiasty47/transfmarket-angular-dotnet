@@ -12,17 +12,17 @@ namespace Testx.Controllers
 
         public ClubsController(AppDbContext context) => _context = context;
 
-        [HttpGet]
+        [HttpGet] //pelna lista klubow z async
         public async Task<ActionResult<IEnumerable<Club>>> GetClubs() => await _context.Clubs.ToListAsync();
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}")] //konkretny klub po id
         public async Task<ActionResult<Club>> GetClub(int id)
         {
             var club = await _context.Clubs.FindAsync(id);
             return club == null ? NotFound() : club;
         }
 
-        [HttpGet("{id}/total-value")]
+        [HttpGet("{id}/total-value")] //suma wartosci wszystkich zawodnikow w klubie
         public async Task<ActionResult<decimal>> GetClubTotalValue(int id)
         {
             var exists = await _context.Clubs.AnyAsync(c => c.Id == id);
@@ -34,7 +34,7 @@ namespace Testx.Controllers
             return Ok(totalValue);
         }
 
-        [HttpPost]
+        [HttpPost] //dodawanie nowego klubu nie wykorzystujemy w froncie
         public async Task<ActionResult<Club>> PostClub(Club club)
         {
             _context.Clubs.Add(club);
@@ -42,7 +42,7 @@ namespace Testx.Controllers
             return CreatedAtAction(nameof(GetClub), new { id = club.Id }, club);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}")] //aktualizacja danych klubu, nie wykorzystujemy w froncie
         public async Task<IActionResult> PutClub(int id, Club club)
         {
             if (id != club.Id) return BadRequest();
@@ -51,7 +51,7 @@ namespace Testx.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")] //usuwanie klubu, nie wykorzystujemy w froncie
         public async Task<IActionResult> DeleteClub(int id)
         {
             var club = await _context.Clubs.FindAsync(id);

@@ -22,9 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
     <Folder Include="Angular17Client\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>

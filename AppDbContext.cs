@@ -11,7 +11,7 @@ namespace Testx
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Nationality> Nationalities { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder) //dodaje dane do bazy danych przy jej tworzeniu, prosty seeder
         {
             base.OnModelCreating(modelBuilder);
 

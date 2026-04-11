@@ -6,9 +6,9 @@ namespace Testx.Models
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public int Trophies { get; set; } // Ilość trofeów narodowych
+        public int Trophies { get; set; } // Ilość trofeow narodowych - brak na froncie
 
-        // Relacja: 1 Narodowość ma wielu piłkarzy
+        // narodowość ma wielu piłkarzy
         public ICollection<Player>? Players { get; set; }
     }
 }

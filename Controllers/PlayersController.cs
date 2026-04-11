@@ -10,15 +10,16 @@ namespace Testx.Controllers
     public class PlayersController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly ICountryApiService _countryApiService;
+        private readonly ICountryApiService _countryApiService; //api do flag
 
+        //pobranie bazy danych i api od flag
         public PlayersController(AppDbContext context, ICountryApiService countryApiService)
         {
             _context = context;
             _countryApiService = countryApiService;
         }
 
-        [HttpGet]
+        [HttpGet] //pelna lista zawodnikow z async, z opcjonalnymi parametrami do filtrowania po klubie i narodowosci
         public async Task<ActionResult<IEnumerable<PlayerDto>>> GetPlayers([FromQuery] int? clubId, [FromQuery] int? nationalityId)
         {
             var query = _context.Players
@@ -53,7 +54,7 @@ namespace Testx.Controllers
                 Weight = p.Weight,
                 Price = p.Price,
                 Position = p.Position,
-                ClubName = p.Club?.Name ?? "Brak klubu",
+                ClubName = p.Club?.Name ?? "Brak klubu", //we froncie jest walidacja ze trzeba podac ten klub i reprezentacje
                 NationalityName = p.Nationality?.Name ?? "Brak narodu",
 
                 FlagUrl = (p.Nationality != null && flagsDictionary.ContainsKey(p.Nationality.Name))
@@ -64,7 +65,7 @@ namespace Testx.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}")] //konkretny zawodnik po id, z informacjami o klubie i narodowosci
         public async Task<ActionResult<Player>> GetPlayer(int id)
         {
             var player = await _context.Players
@@ -77,7 +78,7 @@ namespace Testx.Controllers
             return player;
         }
 
-        [HttpPost]
+        [HttpPost] //dodanie zawodnik
         public async Task<ActionResult<Player>> PostPlayer(Player player)
         {
             _context.Players.Add(player);
@@ -86,7 +87,7 @@ namespace Testx.Controllers
             return CreatedAtAction(nameof(GetPlayer), new { id = player.Id }, player);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}")] //edycja zawodnika
         public async Task<IActionResult> PutPlayer(int id, Player player)
         {
             if (id != player.Id) return BadRequest();
@@ -95,7 +96,7 @@ namespace Testx.Controllers
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(); //w przypadku edycji zawodnika, który został usunięty przez innego użytkownika, wystąpi DbUpdateConcurrencyException, dlatego sprawdzamy czy zawodnik nadal istnieje
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -106,7 +107,7 @@ namespace Testx.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")] //usuwanie zawodnika
         public async Task<IActionResult> DeletePlayer(int id)
         {
             var player = await _context.Players.FindAsync(id);

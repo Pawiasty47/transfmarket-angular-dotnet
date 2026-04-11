@@ -11,7 +11,7 @@ namespace Testx.Services
             _httpClient = httpClient;
         }
 
-        public async Task<decimal> GetEurExchangeRateAsync()
+        public async Task<decimal> GetEurExchangeRateAsync() //metoda do pobierania kursu EUR z API NBP, zwraca kurs jako decimal, a w przypadku błędu zwraca domyślny kurs 4.30
         {
             try
             {
