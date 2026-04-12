@@ -1,6 +1,6 @@
-# Transmarket
+# Transfmarket
 
-Transmarket to pełnostosowa (Full-Stack) aplikacja webowa typu CRUD, służąca do zarządzania bazą piłkarzy, ich wartościami rynkowymi oraz przynależnością klubową.
+Transfmarket to pełnostosowa (Full-Stack) aplikacja webowa typu CRUD, służąca do zarządzania bazą piłkarzy, ich wartościami rynkowymi oraz przynależnością klubową.
 
 ## 🛠 Technologie
 * **Backend:** .NET 8.0 (C#, ASP.NET Core Web API)
@@ -25,4 +25,4 @@ Transmarket to pełnostosowa (Full-Stack) aplikacja webowa typu CRUD, służąca
 
 Aby uruchomić aplikację, sklonuj to repozytorium do jednego, głównego folderu na swoim dysku:
 ```bash
-git clone <https://github.com/Pawiasty47/testapp>
+git clone <https://github.com/Pawiasty47/transmarket-angular-dotnet>
