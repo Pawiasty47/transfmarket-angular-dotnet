@@ -15,13 +15,13 @@ namespace Testx.Services
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<NbpResponse>("https://api.nbp.pl/api/exchangerates/rates/a/eur/?format=json");
+                var response = await _httpClient.GetFromJsonAsync<NbpResponse>("https://api.nbp.pl/api/exchangerates/rates/a/eur/?format=json"); //zapytanie get i od razu zmapowanie go na klase nbpresponse
 
-                return response?.Rates?.FirstOrDefault()?.Mid ?? 0m;
+                return response?.Rates?.FirstOrDefault()?.Mid ?? 0m; //?. operacja przeszla jesli tak dalej, jesli wynik jest null ?? to zwroc 0m
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Błąd pobierania kursu NBP: {ex.Message}");
+                Console.WriteLine($"Błąd pobierania kursu NBP: {ex.Message}"); //w przypadku braku zwroc bazowe 4.30
                 return 4.30m;
             }
         }

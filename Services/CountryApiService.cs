@@ -25,7 +25,7 @@ namespace Testx.Services
 
             var searchName = countryMapper.ContainsKey(countryName) ? countryMapper[countryName] : countryName;
 
-            try
+            try // w wyjatku zeby w przypadku bledy nic nie zwrocilo, a nie wywalilo program
             {
                 var response = await _httpClient.GetAsync($"https://restcountries.com/v3.1/translation/{searchName}"); //najpierw probujemy szukac po nazwie przetlumaczonej, bo restcountries.com ma endpoint do szukania po nazwie przetlumaczonej, ale nie zawsze dziala, dlatego mamy fallback do szukania po nazwie oryginalnej
 
@@ -37,10 +37,10 @@ namespace Testx.Services
 
                 var jsonString = await response.Content.ReadAsStringAsync();
 
-                using var doc = JsonDocument.Parse(jsonString);
-                var root = doc.RootElement[0];
+                using var doc = JsonDocument.Parse(jsonString); //odczytanie jsona
+                var root = doc.RootElement[0]; //wyciagniecie pierwszego elementu
 
-                if (root.TryGetProperty("flags", out var flags) && flags.TryGetProperty("svg", out var flagUrl))
+                if (root.TryGetProperty("flags", out var flags) && flags.TryGetProperty("svg", out var flagUrl)) //jesli kraj ma flage to zwracamy url do flagi
                 {
                     return flagUrl.GetString() ?? string.Empty;
                 }

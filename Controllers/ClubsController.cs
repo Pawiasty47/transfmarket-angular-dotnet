@@ -10,7 +10,7 @@ namespace Testx.Controllers
     {
         private readonly AppDbContext _context;
 
-        public ClubsController(AppDbContext context) => _context = context;
+        public ClubsController(AppDbContext context) => _context = context; //lambda 
 
         [HttpGet] //pelna lista klubow z async
         public async Task<ActionResult<IEnumerable<Club>>> GetClubs() => await _context.Clubs.ToListAsync();

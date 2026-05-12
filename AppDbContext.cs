@@ -5,9 +5,9 @@ namespace Testx
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { } //konstruktor przyjmujacy opcje konfiguracji bazy danych, przekazywane z pliku program.cs, gdzie jest ustawione ze uzywamy bazy danych w pamieci (InMemoryDatabase) o nazwie "FootballDb"
 
-        public DbSet<Player> Players { get; set; }
+        public DbSet<Player> Players { get; set; } //definicje tabel
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Nationality> Nationalities { get; set; }
 

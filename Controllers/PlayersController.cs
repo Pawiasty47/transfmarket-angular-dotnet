@@ -7,20 +7,21 @@ namespace Testx.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PlayersController : ControllerBase
+    public class PlayersController : ControllerBase //dziedziczenie po klasie controllerbase do obslugi zadan pakietow http
     {
         private readonly AppDbContext _context;
         private readonly ICountryApiService _countryApiService; //api do flag
 
         //pobranie bazy danych i api od flag
-        public PlayersController(AppDbContext context, ICountryApiService countryApiService)
+        public PlayersController(AppDbContext context, ICountryApiService countryApiService) //dependency injection
         {
             _context = context;
             _countryApiService = countryApiService;
         }
 
         [HttpGet] //pelna lista zawodnikow z async, z opcjonalnymi parametrami do filtrowania po klubie i narodowosci
-        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetPlayers([FromQuery] int? clubId, [FromQuery] int? nationalityId)
+        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetPlayers([FromQuery] int? clubId, [FromQuery] int? nationalityId) //interfejs enumerable zeby zwrocic kolekcje obiektow PlaterDTO zeby moc zrobic foreach
+            //Task metoda asynchroniczna ActionResult zwroci dane i kody status http
         {
             var query = _context.Players
                 .Include(p => p.Club)
@@ -100,11 +101,11 @@ namespace Testx.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Players.Any(e => e.Id == id)) return NotFound();
+                if (!_context.Players.Any(e => e.Id == id)) return NotFound(); //zwraca blad http404 not found
                 else throw;
             }
 
-            return NoContent();
+            return NoContent(); //eydcja sie powiodla http204
         }
 
         [HttpDelete("{id}")] //usuwanie zawodnika

@@ -18,7 +18,7 @@ namespace Testx.Controllers
         public async Task<ActionResult<decimal>> GetEurRate() //endpoint do pobierania kursu 
         {
             var rate = await _nbpService.GetEurExchangeRateAsync();
-            return Ok(rate);
+            return Ok(rate); //http 200 
         }
     }
 }

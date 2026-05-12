@@ -10,7 +10,7 @@ namespace Testx.Controllers
     {
         private readonly AppDbContext _context;
 
-        public NationalitiesController(AppDbContext context) => _context = context;
+        public NationalitiesController(AppDbContext context) => _context = context; //od razu zwrot wyniku
 
         [HttpGet] //pelna lista narodowosci z async
         public async Task<ActionResult<IEnumerable<Nationality>>> GetNationalities() => await _context.Nationalities.ToListAsync();
@@ -25,12 +25,12 @@ namespace Testx.Controllers
         [HttpGet("{id}/total-value")] //suma wartosci wszystkich zawodnikow danej narodowosci
         public async Task<ActionResult<decimal>> GetNationalityTotalValue(int id)
         {
-            var exists = await _context.Nationalities.AnyAsync(n => n.Id == id);
+            var exists = await _context.Nationalities.AnyAsync(n => n.Id == id); //zapytanie czy kraj istnieje
             if (!exists) return NotFound();
 
             
-            var players = await _context.Players.Where(p => p.NationalityId == id).ToListAsync();
-            var totalValue = players.Sum(p => p.Price);
+            var players = await _context.Players.Where(p => p.NationalityId == id).ToListAsync(); //zawodnicy od id kraju
+            var totalValue = players.Sum(p => p.Price); //linq do zsumowania
 
             return Ok(totalValue);
         }
